@@ -17,6 +17,7 @@
     "testEnvironment": "node"
   },
   "dependencies": {
+    "@azure/storage-blob": "^12.15.0",
     "axios": "^1.4.0",
     "azure-storage-blob": "^0.0.1-security",
     "cors": "^2.8.5",

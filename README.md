@@ -30,24 +30,24 @@ Docker
 
 If you prefer running the project using Docker, follow these steps:
 
-    Ensure you have the latest version of Docker installed on your system.
+Ensure you have the latest version of Docker installed on your system.
 
-    Build the Docker image:
+Build the Docker image:
 
-    ```bash
-    docker build -t shopcart
+```bash
+docker build -t shopcart
 
     Run the Docker container:
 
-    ```bash
-    docker run -it -p 8000:8000 shopcart
+```bash
+docker run -it -p 8000:8000 shopcart
 
 ## Running the Tests
 
 To run automated tests for the ShopCart project, use the following command:
   
-    ```bash
-    npm test
+```bash
+npm test
 
 This will run both client-side and server-side tests.
 
