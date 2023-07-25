@@ -14,15 +14,13 @@ Once you have Node.js and MongoDB set up, follow these steps:
 
 2. In the terminal, navigate to the project root folder and run:
 
-   ```bash
-   npm install
+       npm install
 
 # Running the Project
 
 3. To run the ShopCart project, use the following command:
 
-   ```bash
-   npm run deploy
+       npm run deploy
 
 
 This will start both the server and the frontend application. You can then access the ShopCart platform by browsing to `localhost:8000`.
@@ -34,19 +32,16 @@ Ensure you have the latest version of Docker installed on your system.
 
 Build the Docker image:
 
-    ```bash
     docker build -t shopcart
 
 Run the Docker container:
 
-    ```bash
     docker run -it -p 8000:8000 shopcart
 
 ## Running the Tests
 
 To run automated tests for the ShopCart project, use the following command:
   
-    ```bash
     npm test
 
 This will run both client-side and server-side tests.
