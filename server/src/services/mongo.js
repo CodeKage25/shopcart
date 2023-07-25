@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
-require('dotenv').config()
+require('dotenv').config();
 
-const MONGO_URL = process.env.MONGO_URL
+const MONGO_URL = process.env.MONGO_URL || 'mongodb+srv://shopcart-api:IhkQIKnWmlLd4ePM@shopcartcluster.i3cgmpe.mongodb.net/?retryWrites=true&w=majority'
 
 mongoose.connection.once('open', () => {
     console.log('MongoDB connection ready!')
