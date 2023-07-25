@@ -14,12 +14,14 @@ async function fetchJsonData() {
   const blockBlobClient = containerClient.getBlockBlobClient(blobName);
 
   const response = await blockBlobClient.download(0); // Start reading from the beginning
+  console.log(response)
   if (response.status !== 200) {
     console.log('Problem downloading data');
     throw new Error('product Data failed');
   }
 
   const jsonData = await response.read();
+    console.log(jsonData);
   return JSON.parse(jsonData.toString());
 }
 
@@ -61,11 +63,25 @@ async function loadProducts() {
       console.error('Error loading product data:', error);
       throw error;
     }
+}
+
+async function getAllProducts() {
+    try {
+      console.log('Loading all products...');
+      const products = await productsDatabase.find();
+      console.log('Products loaded successfully.');
+      return products;
+    } catch (error) {
+      console.error('Error loading products:', error);
+      throw error;
+    }
   }
+  
   
 
 module.exports = {
   fetchJsonData,
   populateProduct,
-  loadProducts
+  loadProducts,
+  getAllProducts
 };
