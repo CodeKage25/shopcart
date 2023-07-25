@@ -1,6 +1,5 @@
-const fs = require("fs");
-const path = require("path");
-const { parse } = require('csv-parse');
+require('dotenv').config();
+const { BlobServiceClient } = require("@azure/storage-blob");
 
 require('dotenv').config();
 const { BlobServiceClient } = require("@azure/storage-blob");
@@ -20,4 +19,7 @@ async function fetchJsonData() {
   return JSON.parse(jsonData.toString());
 }
 
-module.exports = fetchJsonData;
+module.exports = {
+  fetchJsonData
+};
+
