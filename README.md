@@ -24,6 +24,8 @@ Once you have Node.js and MongoDB set up, follow these steps:
 
 
 This will start both the server and the frontend application. You can then access the ShopCart platform by browsing to `localhost:8000`.
+
+
 Docker
 
 If you prefer running the project using Docker, follow these steps:
