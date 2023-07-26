@@ -22,7 +22,7 @@ const productsSchema = new mongoose.Schema({
         required: true
     },
     imgUrl: {
-        type: Number,
+        type: String,
         required: true
     },
     model: {
