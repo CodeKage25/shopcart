@@ -22,6 +22,7 @@ const server = http.createServer(app);
 
 async function startServer() {
     await mongoConnect();
+    await populateProduct();
     // Check if MongoDB is already populated, if not, fetch data from Azure Blob Storage and populate it
     const productsCount = await loadProducts();
     if (productsCount === 0) {
@@ -31,7 +32,7 @@ async function startServer() {
     } else {
       console.log('Product data already exists in MongoDB');
     }
-    // await populateProduct();
+    
     server.listen(PORT, () => {
     console.log(`Listening on port ${PORT}...`);
     });

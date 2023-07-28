@@ -8,8 +8,7 @@ const axios = require('axios');
 
 const productsDatabase = require('./products.mongo');
 
-// Fetch JSON Data from Azure Blob Storage using Azure Storage SDK
-
+// Fetch JSON Data from Azure Blob Storage
 async function fetchJsonData() {
     try {
         const url = process.env.URL;
@@ -19,9 +18,7 @@ async function fetchJsonData() {
         console.error('Error fetching data from Azure Blob Storage:', error);
         throw error;
       }
-  }
-  
-  
+  }  
 
 // async function fetchCsvData() {
 //   return new Promise((resolve, reject) => {
@@ -46,9 +43,10 @@ async function fetchJsonData() {
 
 async function populateProduct() {
   try {
-    console.log('Downloading product data...');
+    console.log('Fetching product data...');
     const jsonData = await fetchJsonData();
-    console.log('Product data downloaded successfully.');
+      console.log('Product data fetched successfully.');
+      console.log(jsonData);
 
     const products = jsonData.map((item) => {
       return {
@@ -57,7 +55,6 @@ async function populateProduct() {
         name: item.name,
         currentPrice: item.current_price,
         currency: item.currency,
-        Brand: item.brand,
         imgUrl: item.image_url,
         productID: item.id,
         model: item.model,
@@ -116,24 +113,28 @@ async function loadProducts() {
     }
 }
 
-async function getAllProducts() {
+async function getAllProducts(skip, limit, sortBy) {
     try {
-      console.log('Loading all products...');
-      const products = await productsDatabase.find({}, {
-        '_id': 0, '__v': 0,
-    });
-      console.log('Products loaded successfully.');
-      return products;
+        console.log('Loading all products...');
+        let query = productsDatabase.find({}, { '_id': 0, '__v': 0 });
+
+        // If sortBy parameter is provided, apply sorting
+        if (sortBy) {
+            query = query.sort({ [sortBy]: 1 }); // 1 for ascending order, -1 for descending
+        }
+
+        const products = await query.skip(skip).limit(limit);
+        console.log('Products loaded successfully.');
+        return products;
     } catch (error) {
-      console.error('Error loading products:', error);
-      throw error;
+        console.error('Error loading products:', error);
+        throw error;
     }
-  }
+}
   
   
 
 module.exports = {
-//   fetchJsonData,
   populateProduct,
   loadProducts,
   getAllProducts

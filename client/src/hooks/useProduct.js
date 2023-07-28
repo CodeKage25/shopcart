@@ -3,11 +3,11 @@ import { useCallback, useEffect, useState } from "react";
 import { httpGetProducts } from './requests'
 
 
-function useProducts() {
+function useProducts(queryParams) {
     const [products, setProducts] = useState([])
 
     const getProducts = useCallback(async () => {
-        const fetchedProducts = await httpGetProducts();
+        const fetchedProducts = await httpGetProducts(queryParams);
         setProducts(fetchedProducts)
     }, [])
 

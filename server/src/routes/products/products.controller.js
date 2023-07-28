@@ -1,11 +1,16 @@
 const {
     getAllProducts
-} = require('../../models/products.model')
+} = require('../../models/products.model');
+
+const {
+    getPagination
+} = require('../../services/query')
 // Function to get all products
 async function httpgetAllProducts(req, res) {
     try {
       console.log('Fetching all products...');
-      const products = await getAllProducts();
+      const {skip, limit} = getPagination(req.query)
+      const products = await getAllProducts(skip, limit);
       console.log('Product data loaded successfully.');
       res.status(200).json(products);
     } catch (error) {
