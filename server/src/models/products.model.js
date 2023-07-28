@@ -1,29 +1,48 @@
 require('dotenv').config();
 const { BlobServiceClient } = require("@azure/storage-blob");
+const fs = require('fs');
+const path = require('path');
+const { parse } = require('csv-parse');
+const axios = require('axios');
+
 
 const productsDatabase = require('./products.mongo');
 
-const connectionString = process.env.CONNECTIONSTRING;
-const containerName = "shopcart";
-const blobName = "productData.json";
-
 // Fetch JSON Data from Azure Blob Storage using Azure Storage SDK
+
 async function fetchJsonData() {
-  const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
-  const containerClient = blobServiceClient.getContainerClient(containerName);
-  const blockBlobClient = containerClient.getBlockBlobClient(blobName);
-
-  const response = await blockBlobClient.download(0); // Start reading from the beginning
-  console.log(response)
-  if (response.status !== 200) {
-    console.log('Problem downloading data');
-    throw new Error('product Data failed');
+    try {
+        const url = process.env.URL;
+        const response = await axios.get(url);
+        return response.data;
+      } catch (error) {
+        console.error('Error fetching data from Azure Blob Storage:', error);
+        throw error;
+      }
   }
+  
+  
 
-  const jsonData = await response.read();
-    console.log(jsonData);
-  return JSON.parse(jsonData.toString());
-}
+// async function fetchCsvData() {
+//   return new Promise((resolve, reject) => {
+//     const csvData = [];
+//     fs.createReadStream(path.join(__dirname, '..', '..', 'data', 'productData.csv'))
+//       .pipe(parse({ columns: true }))
+//       .on('data', (data) => {
+//         csvData.push(data); // Push each parsed row to the csvData array
+//       })
+//       .on('error', (err) => {
+//         console.error('Error parsing CSV:', err);
+//         reject(err);
+//       })
+//       .on('end', () => {
+//         resolve(csvData); // Resolve with the array of parsed data
+//       });
+//   });
+// }
+
+  
+  
 
 async function populateProduct() {
   try {
@@ -38,9 +57,10 @@ async function populateProduct() {
         name: item.name,
         currentPrice: item.current_price,
         currency: item.currency,
-        imgUrl: item.img_url,
+        Brand: item.brand,
+        imgUrl: item.image_url,
+        productID: item.id,
         model: item.model,
-        productID: item.id
       };
     });
 
@@ -52,10 +72,41 @@ async function populateProduct() {
   }
 }
 
+// async function populateProduct() {
+//     try {
+//       console.log('Fetching CSV data...');
+//       const csvData = await fetchCsvData();
+//       console.log('CSV data fetched successfully.');
+  
+//       const products = csvData.map((item) => {
+//         return {
+//           category: item.category,
+//           subCategory: item.subcategory,
+//           name: item.name,
+//           currentPrice: Number(item.current_price),
+//           currency: item.currency,
+//           Brand: item.brand,
+//           imgUrl: item.image_url,
+//           productID: item.id,
+//           model: item.model,
+//         };
+//       });
+  
+//       console.log('Inserting product data into MongoDB...');
+//       await productsDatabase.insertMany(products);
+//       console.log('Product data inserted into MongoDB successfully.');
+//     } catch (error) {
+//       console.error('Error populating product data:', error);
+//     }
+//   }
+  
+
 async function loadProducts() {
     try {
       console.log('Loading product data from MongoDB...');
-      const products = await productsDatabase.find();
+      const products = await productsDatabase.find({}, {
+        '_id': 0, '__v': 0,
+    });
       console.log('Product data loaded successfully.');
   
       return products;
@@ -68,7 +119,9 @@ async function loadProducts() {
 async function getAllProducts() {
     try {
       console.log('Loading all products...');
-      const products = await productsDatabase.find();
+      const products = await productsDatabase.find({}, {
+        '_id': 0, '__v': 0,
+    });
       console.log('Products loaded successfully.');
       return products;
     } catch (error) {
@@ -80,7 +133,7 @@ async function getAllProducts() {
   
 
 module.exports = {
-  fetchJsonData,
+//   fetchJsonData,
   populateProduct,
   loadProducts,
   getAllProducts

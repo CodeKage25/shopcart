@@ -8,6 +8,7 @@ const app = require('./app');
 
 const { mongoConnect } = require('./services/mongo');
 const {loadProducts} = require('./models/products.model')
+const {populateProduct} = require('./models/products.model')
 
 app.listen();
 
@@ -30,6 +31,7 @@ async function startServer() {
     } else {
       console.log('Product data already exists in MongoDB');
     }
+    // await populateProduct();
     server.listen(PORT, () => {
     console.log(`Listening on port ${PORT}...`);
     });
