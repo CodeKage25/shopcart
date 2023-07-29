@@ -1,6 +1,7 @@
 const express = require('express')
 const productsRouter = require('./products/products.router');
-const ordersRouter = require('./orders/orders.router');
+const ordersouter = require('./orders/orders.router');
+const cartsRouter = require('./carts/carts.router');
 const authRouter = require('./userAuth/userAuth.router');
 const { authenticateToken } = require('./userAuth/userAuth.controller');
 
@@ -10,6 +11,7 @@ const api = express.Router();
 
 api.use('/products', productsRouter);
 api.use('/orders', ordersRouter);
+api.use('/carts', cartsRouter);
 
 api.use('/protected-route-1', authenticateToken, (req, res) => {
     res.json({ message: 'Protected Route 1' });
