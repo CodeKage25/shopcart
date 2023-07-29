@@ -1,5 +1,6 @@
 const {
-    getAllProducts
+    getAllProducts,
+    getProductById
 } = require('../../models/products.model');
 
 const {
@@ -19,6 +20,25 @@ async function httpgetAllProducts(req, res) {
     }
   }
 
+async function httpgetProductById(req, res) {
+    try {
+        const productId = req.params.id;
+        const product = await getProductById(productId);
+        if (!product) {
+            return res.status(404).json({
+                error: 'Product not found'
+            })
+        }
+        return res.json(product)
+    } catch (error) {
+        console.error('Error fetching product:', error)
+        res.status(500).json({
+            error: 'Failed to fetch product'
+        })
+    }
+}  
+
 module.exports = {
     httpgetAllProducts,
+    httpgetProductById
 };

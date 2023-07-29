@@ -131,11 +131,24 @@ async function getAllProducts(skip, limit, sortBy) {
         throw error;
     }
 }
+
+
+async function getProductById(productId) {
+    try {
+        // fetch the product from the db using product model and the provided id
+        const product = await productsDatabase.findById(productId)
+        return product
+    } catch (error) {
+        console.error('Error fetching product:', error);
+        throw error;
+    }
+}
   
   
 
 module.exports = {
   populateProduct,
   loadProducts,
-  getAllProducts
+  getAllProducts,
+  getProductById
 };
