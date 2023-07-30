@@ -1,7 +1,7 @@
 {
   "name": "shopcart",
   "version": "1.0.0",
-  "description": "",
+  "description": "ShopCart is an e-commerce platform that provides a wide range of products for shopping enthusiasts",
   "main": "index.js",
   "scripts": {
     "install-server": "npm install --prefix server",
